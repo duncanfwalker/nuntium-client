@@ -1,0 +1,21 @@
+{
+  "name": "nuntium-client",
+  "version": "0.0.1",
+  "description": "Client library for the Nuntium API. Direct port of the nuntium_api Gem",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "restler": "^3.3.0"
+  },
+  "devDependencies": {
+    "mocha": "0.3.x",
+    "sinon": "1.16.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Duncan Walker",
+  "license": "MIT"
+}

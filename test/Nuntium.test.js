@@ -19,17 +19,46 @@ describe('Nuntium', function() {
 						callback.reset();
 				});
 				it('gets countries', function () {
-						expectGet('/api/countries.json',[{"name": "Argentina", "iso2": "ar"}], {"code": 200});
+						expectGet('/api/countries.json',[{"name": "Argentina", "iso2": "ar"}]);
 						api.getCountries(callback);
 						assert(callback.withArgs([{"name": "Argentina", "iso2": "ar"}]).calledOnce);
 				});
-
-				it('gets country');
-				it('gets carriers');
-				it('gets carriers for a country');
-				it('gets carrier');
-				it('gets channels');
-				it('gets channel');
+				it('gets country', function () {
+						expectGet('/api/countries/ar.json',{"name": "Argentina", "iso2": "ar"});
+						api.getCountry('ar',callback);
+						assert(callback.withArgs({"name": "Argentina", "iso2": "ar"}).calledOnce);
+				});
+				it('requires and id to get a country',function() {
+						assert.throws(api.getCountry(null,callback));
+				});
+				it('gets carriers', function () {
+						expectGet('/api/carriers.json',[{"name": "Argentina", "iso2": "ar"}]);
+						api.getCarriers(callback);
+						assert(callback.withArgs([{"name": "Argentina", "iso2": "ar"}]).calledOnce);
+				});
+				it('gets carriers for a country',function() {
+						expectGet('/api/carriers.json?country_id=ar',[{"name": "Argentina", "iso2": "ar"}]);
+						api.getCarriers('ar',callback);
+						assert(callback.withArgs([{"name": "Argentina", "iso2": "ar"}]).calledOnce);
+				});
+				it('gets carrier',function() {
+						expectGet('/api/carriers/ar.json',{"name": "Argentina", "iso2": "ar"});
+						api.getCarrier('ar',callback);
+						assert(callback.withArgs({"name": "Argentina", "iso2": "ar"}).calledOnce);
+				});
+				it('requires and id to get a carrier',function() {
+						assert.throws(api.getCarrier(null,callback));
+				});
+				it('gets channels',function() {
+						expectGet('/api/channels.json',[{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}]);
+						api.getChannels(callback);
+						assert(callback.withArgs([{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}]).calledOnce);
+				});
+				it('gets channel',function() {
+						expectGet('/api/channels/Argentina.json',{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]});
+						api.getChannel('Argentina',callback);
+						assert(callback.withArgs({"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}).calledOnce);
+				});
 				it('updates channel');
 				it('deletes channel');
 				it('gets candidate channels for ao');
@@ -42,11 +71,11 @@ describe('Nuntium', function() {
 				it('authorizes twitter channel');
 				it('adds xmpp contact');
 
-				function expectGet(url,data, response) {
+				function expectGet(url,data) {
 						var request = new Request('', {});
 						sinon.stub(request, "on")
 								.withArgs("complete")
-								.callsArgWith(1, data, response);
+								.callsArgWith(1, data, {"code": 200});
 
 						server = sinon.mock(rest, "get");
 						server

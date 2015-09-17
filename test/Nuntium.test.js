@@ -69,7 +69,15 @@ describe('Nuntium', function() {
 						sinon.assert.calledWith(callback,[{"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]}]);
 						assert(callback.calledOnce);
 				});
-				it('sends single ao');
+				it('sends single ao', function () {
+						expectGetWithHeaders(
+								'/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
+								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}],
+								{'x_nuntium_id': '1', 'x_nuntium_guid':'2', 'x_nuntium_token': '3'}
+						);
+						api.sendAO({ 'from': 'sms://1234',  'body': 'Hello'}, callback);
+						sinon.assert.calledWith(callback, {'id': '1', 'guid': '2', 'token': '3'});
+				});
 				it('sends many aos');
 				it('gets ao',function() {
 						expectGet('/account_name/application_name/get_ao.json?token=foo',[{"name": "Argentina", "iso2": "ar"}]);
@@ -106,6 +114,16 @@ describe('Nuntium', function() {
 						sinon.stub(request, "on")
 								.withArgs("complete")
 								.callsArgWith(1, data, {"code": 200});
+
+						server = sinon.mock(rest, "get");
+						server
+								.expects("get").withArgs(url).returns(request);
+				}
+				function expectGetWithHeaders(url,responseData, responseHeaders) {
+						var request = new Request('', {});
+						sinon.stub(request, "on")
+								.withArgs("complete")
+								.callsArgWith(1, responseData, {"headers": responseHeaders});
 
 						server = sinon.mock(rest, "get");
 						server

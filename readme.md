@@ -20,8 +20,7 @@ npm test
 
 TODO
 ----
-* Deal with channel configuration
-* Add fail callbacks
 * Check parameters
-* Improve the client's API
+* Improve the client's API for applications
+* Add authentication
 * Document client API

@@ -60,17 +60,41 @@ describe('Nuntium', function() {
 						api.getChannel('Argentina',callback);
 						sinon.assert.calledWith(callback,{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]});
 				});
-				it('updates channel');
-				it('deletes channel');
+				it('creates channel',function() {
+						expectPost(
+								'/api/channels.json',
+								{"name":"Argentina","configuration":[{"name":"foo","value":"bar"}]},
+								{"name":"Argentina","configuration":[{"name":"foo","value":"bar"}]}
+						);
+
+						api.createChannel({"name":"Argentina","configuration":{"foo":"bar"}},callback);
+						sinon.assert.calledWith(callback, {"name":"Argentina","configuration":{"foo":"bar"}});
+				});
+				it('updates channel', function () {
+						expectPut(
+								'/api/channels/Argentina.json',
+								{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}
+						);
+
+						api.updateChannel('Argentina',{'name': 'Argentina', 'configuration': [{"foo":"bar"}]}, callback);
+						sinon.assert.calledWith(callback, {'name': 'Argentina', 'configuration': {'foo': 'bar'}});
+				});
+				it('deletes channel',function() {
+							expectDelete('/api/channels/Argentina');
+							api.deleteChannel('Argentina');
+				});
 				it('gets candidate channels for ao', function() {
-						expectGet('/api/candidate/channels.json?from=sms%3A%2F%2F1234&body=Hello',[{"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]}]);
+						expectGet(
+								'/api/candidate/channels.json?from=sms%3A%2F%2F1234&body=Hello',
+								[{"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]}]
+						);
 
 						api.getCandidateChannelsForAO({'from':'sms://1234','body':'Hello'},callback);
 						sinon.assert.calledWith(callback,[{"name":"Argentina","configuration":[{"value":"bar","name":"foo"}]}]);
 						assert(callback.calledOnce);
 				});
 				it('sends single ao', function () {
-						expectGetWithHeaders(
+						expectGet(
 								'/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
 								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}],
 								{'x_nuntium_id': '1', 'x_nuntium_guid':'2', 'x_nuntium_token': '3'}
@@ -78,7 +102,22 @@ describe('Nuntium', function() {
 						api.sendAO({ 'from': 'sms://1234',  'body': 'Hello'}, callback);
 						sinon.assert.calledWith(callback, {'id': '1', 'guid': '2', 'token': '3'});
 				});
-				it('sends many aos');
+				it('sends many aos', function() {
+						expectPost(
+								'/account_name/application_name/send_ao.json',
+								[{"from":"sms://1234","body":"Hello1"},{"from":"sms://1234","body":"Hello2"}],
+								null,
+								{'x_nuntium_token':'3'}
+						);
+
+						api.sendAO([{"from":"sms://1234","body":"Hello1"},{"from":"sms://1234","body":"Hello2"}],callback);
+						sinon.assert.calledWith(callback, {'token': '3'});
+						/*
+							should_receive_http_post_with_headers "/account/application/send_ao.json", post_body, :x_nuntium_token => '3'
+							response = api.send_ao [{:from => 'sms://1234', :body => 'Hello'}]
+							response.should eq(:token => '3')
+						 */
+				});
 				it('gets ao',function() {
 						expectGet('/account_name/application_name/get_ao.json?token=foo',[{"name": "Argentina", "iso2": "ar"}]);
 						api.getAO('foo',callback);
@@ -109,25 +148,50 @@ describe('Nuntium', function() {
 						api.xmppAddContact({'channel':'chan','id':'foo@bar.com'});
 				});
 
-				function expectGet(url,data) {
+				function expectGet(url,responseData, responseHeaders) {
+						var response = {"headers": responseHeaders};
 						var request = new Request('', {});
 						sinon.stub(request, "on")
 								.withArgs("complete")
-								.callsArgWith(1, data, {"code": 200});
+								.callsArgWith(1, responseData, response);
 
 						server = sinon.mock(rest, "get");
 						server
 								.expects("get").withArgs(url).returns(request);
 				}
-				function expectGetWithHeaders(url,responseData, responseHeaders) {
+				function expectPut(url,responseData, responseHeaders) {
+						var response = {"headers": responseHeaders};
 						var request = new Request('', {});
 						sinon.stub(request, "on")
 								.withArgs("complete")
-								.callsArgWith(1, responseData, {"headers": responseHeaders});
+								.callsArgWith(1, responseData, response);
 
-						server = sinon.mock(rest, "get");
+						server = sinon.mock(rest, "put");
 						server
-								.expects("get").withArgs(url).returns(request);
+								.expects("put").withArgs(url).returns(request);
+				}
+
+				function expectPost(url,requestBody,responseBody, responseHeaders) {
+						var response = {"headers": responseHeaders};
+						var request = new Request('', {});
+						sinon.stub(request, "on")
+								.withArgs("complete")
+								.callsArgWith(1, responseBody, response);
+
+						server = sinon.mock(rest, "postJson");
+						server
+								.expects("postJson").withArgs(url,requestBody).returns(request);
+				}
+				function expectDelete(url,responseData, responseHeaders) {
+						var response = {"headers": responseHeaders};
+						var request = new Request('', {});
+						sinon.stub(request, "on")
+								.withArgs("complete")
+								.callsArgWith(1, responseData, response);
+
+						server = sinon.mock(rest, "del");
+						server
+								.expects("del").withArgs(url).returns(request);
 				}
 		});
 });

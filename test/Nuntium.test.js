@@ -131,7 +131,12 @@ describe('Nuntium', function() {
 						sinon.assert.calledWith(callback,[{"name": "Argentina", "iso2": "ar"}]);
 						assert(callback.calledOnce);
 				});
-				it('sets custom attributes');
+				it('sets custom attributes',function() {
+						expectPost('/api/custom_attributes?address=foo',{"application":"bar"},{"application":"bar"});
+						api.setCustomAttributes('foo',{"application":"bar"},callback);
+						sinon.assert.calledWith(callback,{"application":"bar"});
+						assert(callback.calledOnce);
+				});
 				it('creates twitter friendship',function() {
 						expectGet('/api/channels/twit/twitter/friendships/create?user=foo&follow=true');
 						api.createTwitterFriendship({'channel':'twit','user':'foo','follow':true});

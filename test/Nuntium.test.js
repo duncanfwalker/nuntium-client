@@ -8,7 +8,7 @@ var NuntiumError = require('../lib/nuntiumerror');
 describe('API', function () {
 		var callback, api, server;
 		before(function () {
-				api = new Nuntium("account_name", "application_name", "password");
+				api = new Nuntium("account_name", "application_name", "SomePW");
 		});
 		beforeEach(function () {
 				server = sinon.mock(rest);
@@ -122,7 +122,7 @@ describe('API', function () {
 				});
 				it('deletes channel', function () {
 						expectDelete('/api/channels/Argentina');
-						api.deleteChannel('Argentina');
+						api.deleteChannel('Argentina', function() {});
 				});
 				it('requires a channel name to delete', function () {
 						assert.throws(
@@ -146,7 +146,14 @@ describe('API', function () {
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}]);
 						assert(callback.calledOnce);
 				});
-				// TODO: check application auth
+				it('sends ao request has application authentication', function () {
+						var stub = sinon.stub(rest, "get");
+						stub.returns(new Request('', ''));
+
+						api.sendAO(null, callback);
+						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][1]);
+						stub.restore();
+				});
 				it('sends single ao', function () {
 						expectGet(
 								'/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
@@ -157,7 +164,7 @@ describe('API', function () {
 						sinon.assert.calledWith(callback, {'id': '1', 'guid': '2', 'token': '3'});
 				});
 
-				// TODO: check application auth
+
 				it('sends many aos', function () {
 						expectPost(
 								'/account_name/application_name/send_ao.json',
@@ -169,13 +176,28 @@ describe('API', function () {
 						api.sendAO([{"from": "sms://1234", "body": "Hello1"}, {"from": "sms://1234", "body": "Hello2"}], callback);
 						sinon.assert.calledWith(callback, {'token': '3'});
 				});
+				it('sends many aos request has application authentication', function () {
+						var stub = sinon.stub(rest, "postJson");
+						stub.returns(new Request('', ''));
 
-				// TODO: check application auth
+						api.sendAO([{"body":"hello1"},{"body":"hello2"}], callback);
+						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][2]);
+						stub.restore();
+				});
+
 				it('gets ao', function () {
 						expectGet('/account_name/application_name/get_ao.json?token=foo', [{"name": "Argentina", "iso2": "ar"}]);
 						api.getAO('foo', callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 						assert(callback.calledOnce);
+				});
+				it('gets ao request has application authentication', function () {
+						var stub = sinon.stub(rest, "get");
+						stub.returns(new Request('', ''));
+
+						api.getAO('foo', callback);
+						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][1]);
+						stub.restore();
 				});
 		});
 
@@ -233,9 +255,9 @@ describe('API', function () {
 						.withArgs("complete")
 						.callsArgWith(1, responseData, response);
 
-				server = sinon.mock(rest, "put");
+				server = sinon.mock(rest, "putJson");
 				server
-						.expects("put").withArgs(url).returns(request);
+						.expects("putJson").withArgs(url).returns(request);
 		}
 
 		function expectPost(url, requestBody, responseBody, responseHeaders) {

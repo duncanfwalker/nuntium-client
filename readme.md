@@ -20,7 +20,8 @@ npm test
 
 TODO
 ----
-* Check parameters
-* Improve the client's API for applications
-* Add authentication
 * Document client API
+* Add account authentication
+* Maybe make callback's optional
+* Add support for multiple applications 
+* Add Nuntium Application to handle the AT and AO delivery callbacks - maybe a separate module?

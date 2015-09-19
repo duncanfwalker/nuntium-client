@@ -8,7 +8,7 @@ var NuntiumError = require('../lib/nuntium-error');
 describe('API', function () {
 		var callback, api, server;
 		before(function () {
-				api = new Nuntium("account_name", "application_name", "SomePW");
+				api = new Nuntium("host","account_name", "application_name", "SomePW");
 		});
 		beforeEach(function () {
 				server = sinon.mock(rest);
@@ -22,12 +22,12 @@ describe('API', function () {
 
 		describe('Countries', function () {
 				it('handles request and response', function () {
-						expectGet('/api/countries.json', [{"name": "Argentina", "iso2": "ar"}]);
+						expectGet('host/api/countries.json', [{"name": "Argentina", "iso2": "ar"}]);
 						api.getCountries(callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 				});
 				it('gets country', function () {
-						expectGet('/api/countries/ar.json', {"name": "Argentina", "iso2": "ar"});
+						expectGet('host/api/countries/ar.json', {"name": "Argentina", "iso2": "ar"});
 						api.getCountry('ar', callback);
 						sinon.assert.calledWith(callback, {"name": "Argentina", "iso2": "ar"});
 				});
@@ -38,17 +38,17 @@ describe('API', function () {
 
 		describe('Carriers', function () {
 				it('gets carriers', function () {
-						expectGet('/api/carriers.json', [{"name": "Argentina", "iso2": "ar"}]);
+						expectGet('host/api/carriers.json', [{"name": "Argentina", "iso2": "ar"}]);
 						api.getCarriers(callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 				});
 				it('gets carriers for a country', function () {
-						expectGet('/api/carriers.json?country_id=ar', [{"name": "Argentina", "iso2": "ar"}]);
+						expectGet('host/api/carriers.json?country_id=ar', [{"name": "Argentina", "iso2": "ar"}]);
 						api.getCarriers('ar', callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 				});
 				it('gets carrier', function () {
-						expectGet('/api/carriers/ar.json', {"name": "Argentina", "iso2": "ar"});
+						expectGet('host/api/carriers/ar.json', {"name": "Argentina", "iso2": "ar"});
 						api.getCarrier('ar', callback);
 						sinon.assert.calledWith(callback, {"name": "Argentina", "iso2": "ar"});
 				});
@@ -61,12 +61,12 @@ describe('API', function () {
 
 		describe('Channel', function () {
 				it('gets channels', function () {
-						expectGet('/api/channels.json', [{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}]);
+						expectGet('host/api/channels.json', [{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}]);
 						api.getChannels(callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}]);
 				});
 				it('gets channel', function () {
-						expectGet('/api/channels/Argentina.json', {
+						expectGet('host/api/channels/Argentina.json', {
 								"name":          "Argentina",
 								"configuration": [{"name": "foo", "value": "bar"}]
 						});
@@ -78,7 +78,7 @@ describe('API', function () {
 				});
 				it('creates channel (name-value config pairs)', function () {
 						expectPost(
-								'/api/channels.json',
+								'host/api/channels.json',
 								{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]},
 								{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}
 						);
@@ -87,7 +87,7 @@ describe('API', function () {
 				});
 				it('can create with an empty config', function () {
 						expectPost(
-								'/api/channels.json',
+								'host/api/channels.json',
 								{"name": "Argentina"},
 								{"name": "Argentina"}
 						);
@@ -96,7 +96,7 @@ describe('API', function () {
 				});
 				it('updates channel (name-value config pairs)', function () {
 						expectPut(
-								'/api/channels.json',
+								'host/api/channels.json',
 								{"name": "Argentina", "configuration": [{"name": "foo", "value": "bar"}]}
 						);
 
@@ -105,7 +105,7 @@ describe('API', function () {
 				});
 				it('can update with an empty config', function () {
 						expectPut(
-								'/api/channels.json',
+								'host/api/channels.json',
 								{"name": "Argentina"},
 								{"name": "Argentina"}
 						);
@@ -121,7 +121,7 @@ describe('API', function () {
 						);
 				});
 				it('deletes channel', function () {
-						expectDelete('/api/channels/Argentina');
+						expectDelete('host/api/channels/Argentina');
 						api.deleteChannel('Argentina', function() {});
 				});
 				it('requires a channel name to delete', function () {
@@ -138,7 +138,7 @@ describe('API', function () {
 				// TODO: check application auth
 				it('gets candidate channels for ao', function () {
 						expectGet(
-								'/api/candidate/channels.json?from=sms%3A%2F%2F1234&body=Hello',
+								'host/api/candidate/channels.json?from=sms%3A%2F%2F1234&body=Hello',
 								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}]
 						);
 
@@ -156,7 +156,7 @@ describe('API', function () {
 				});
 				it('sends single ao', function () {
 						expectGet(
-								'/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
+								'host/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
 								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}],
 								{'x_nuntium_id': '1', 'x_nuntium_guid': '2', 'x_nuntium_token': '3'}
 						);
@@ -167,7 +167,7 @@ describe('API', function () {
 
 				it('sends many aos', function () {
 						expectPost(
-								'/account_name/application_name/send_ao.json',
+								'host/account_name/application_name/send_ao.json',
 								[{"from": "sms://1234", "body": "Hello1"}, {"from": "sms://1234", "body": "Hello2"}],
 								null,
 								{'x_nuntium_token': '3'}
@@ -186,7 +186,7 @@ describe('API', function () {
 				});
 
 				it('gets ao', function () {
-						expectGet('/account_name/application_name/get_ao.json?token=foo', [{"name": "Argentina", "iso2": "ar"}]);
+						expectGet('host/account_name/application_name/get_ao.json?token=foo', [{"name": "Argentina", "iso2": "ar"}]);
 						api.getAO('foo', callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 						assert(callback.calledOnce);
@@ -203,14 +203,14 @@ describe('API', function () {
 
 		describe('Custom Attributes', function () {
 				it('gets custom attributes', function () {
-						expectGet('/api/custom_attributes?address=foo', [{"name": "Argentina", "iso2": "ar"}]);
+						expectGet('host/api/custom_attributes?address=foo', [{"name": "Argentina", "iso2": "ar"}]);
 
 						api.getCustomAttributes('foo', callback);
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 						assert(callback.calledOnce);
 				});
 				it('sets custom attributes', function () {
-						expectPost('/api/custom_attributes?address=foo', {"application": "bar"}, {"application": "bar"});
+						expectPost('host/api/custom_attributes?address=foo', {"application": "bar"}, {"application": "bar"});
 						api.setCustomAttributes('foo', {"application": "bar"}, callback);
 						sinon.assert.calledWith(callback, {"application": "bar"});
 						assert(callback.calledOnce);
@@ -219,19 +219,19 @@ describe('API', function () {
 
 		describe('Twitter', function () {
 				it('creates twitter friendship', function () {
-						expectGet('/api/channels/twit/twitter/friendships/create?user=foo&follow=true');
+						expectGet('host/api/channels/twit/twitter/friendships/create?user=foo&follow=true');
 						api.createTwitterFriendship({'channel': 'twit', 'user': 'foo', 'follow': true});
 				});
 				// TODO application auth
 				it('authorizes twitter channel', function () {
-						expectGet('/api/channels/twit/twitter/authorize?callback=foo', 'http://bar');
+						expectGet('host/api/channels/twit/twitter/authorize?callback=foo', 'http://bar');
 
 						api.twitterAuthorize({'channel': 'twit', 'callback': 'foo'}, callback);
 						sinon.assert.calledWith(callback, 'http://bar');
 						assert(callback.calledOnce);
 				});
 				it('adds xmpp contact', function () {
-						expectGet('/api/channels/chan/xmpp/add_contact?id=foo%40bar.com');
+						expectGet('host/api/channels/chan/xmpp/add_contact?id=foo%40bar.com');
 						api.xmppAddContact({'channel': 'chan', 'id': 'foo@bar.com'});
 				});
 		});

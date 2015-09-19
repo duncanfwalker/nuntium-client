@@ -3,7 +3,7 @@
 **Kind**: global class  
 
 * [Client](#Client)
-  * [new Client(account, application, password)](#new_Client_new)
+  * [new Client(service, account, application, password)](#new_Client_new)
   * [.getCountries(callback)](#Client+getCountries)
   * [.getCountry(country_id, callback)](#Client+getCountry)
   * [.getCarriers([country_id], callback)](#Client+getCarriers)
@@ -23,12 +23,13 @@
   * [.xmppAddContact(args)](#Client+xmppAddContact)
 
 <a name="new_Client_new"></a>
-### new Client(account, application, password)
+### new Client(service, account, application, password)
 Represents the Nuntium API.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
+| service | <code>string</code> | service url eg 'https://nuntium.instedd.org' |
 | account | <code>string</code> | Your Nuntium account name |
 | application | <code>string</code> | Name of your Nuntium application |
 | password | <code>string</code> | Password for the application. |

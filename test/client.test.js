@@ -10,6 +10,7 @@ describe('API', function () {
 		before(function () {
 				api = new Nuntium("host","account_name", "application_name", "SomePW");
 		});
+
 		beforeEach(function () {
 				server = sinon.mock(rest);
 				callback = sinon.spy();
@@ -19,7 +20,6 @@ describe('API', function () {
 				callback.reset();
 				server.restore();
 		});
-
 		describe('Countries', function () {
 				it('handles request and response', function () {
 						expectGet('host/api/countries.json', [{"name": "Argentina", "iso2": "ar"}]);
@@ -146,17 +146,10 @@ describe('API', function () {
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}]);
 						assert(callback.calledOnce);
 				});
-				it('sends ao request has application authentication', function () {
-						var stub = sinon.stub(rest, "get");
-						stub.returns(new Request('', ''));
 
-						api.sendAO(null, callback);
-						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][1]);
-						stub.restore();
-				});
 				it('sends single ao', function () {
 						expectGet(
-								'host/account_name/application_name/send_ao.json?from=sms%3A%2F%2F1234&body=Hello',
+								'host/account_name/application_name/send_ao?from=sms%3A%2F%2F1234&body=Hello',
 								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}],
 								{'x_nuntium_id': '1', 'x_nuntium_guid': '2', 'x_nuntium_token': '3'}
 						);
@@ -176,14 +169,7 @@ describe('API', function () {
 						api.sendAO([{"from": "sms://1234", "body": "Hello1"}, {"from": "sms://1234", "body": "Hello2"}], callback);
 						sinon.assert.calledWith(callback, {'token': '3'});
 				});
-				it('sends many aos request has application authentication', function () {
-						var stub = sinon.stub(rest, "postJson");
-						stub.returns(new Request('', ''));
 
-						api.sendAO([{"body":"hello1"},{"body":"hello2"}], callback);
-						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][2]);
-						stub.restore();
-				});
 
 				it('gets ao', function () {
 						expectGet('host/account_name/application_name/get_ao.json?token=foo', [{"name": "Argentina", "iso2": "ar"}]);
@@ -191,14 +177,7 @@ describe('API', function () {
 						sinon.assert.calledWith(callback, [{"name": "Argentina", "iso2": "ar"}]);
 						assert(callback.calledOnce);
 				});
-				it('gets ao request has application authentication', function () {
-						var stub = sinon.stub(rest, "get");
-						stub.returns(new Request('', ''));
 
-						api.getAO('foo', callback);
-						assert.deepEqual(	{  'password': "SomePW","username": "account_name/application_name" }, stub.args[0][1]);
-						stub.restore();
-				});
 		});
 
 		describe('Custom Attributes', function () {
@@ -283,4 +262,37 @@ describe('API', function () {
 				server
 						.expects("del").withArgs(url).returns(request);
 		}
+});
+
+describe('Authentication', function () {
+		var api, stubGet, stubPost,callback;
+		before(function () {
+				api = new Nuntium("host", "account_name", "application_name", "SomePW");
+		});
+
+		beforeEach(function () {
+				stubGet = sinon.stub(rest, "get");
+				stubGet.returns(new Request('', ''));
+
+				stubPost = sinon.stub(rest, "postJson");
+				stubPost.returns(new Request('', ''));
+
+				callback = function() {}
+		});
+		afterEach(function () {
+				stubGet.restore();
+				stubPost.restore();
+		});
+		it('sends ao request has application authentication', function () {
+				api.sendAO(null, callback);
+				assert.deepEqual({'password': "SomePW", "username": "account_name/application_name"}, stubGet.args[0][1]);
+		});
+		it('gets ao request has application authentication', function () {
+				api.getAO('foo', callback);
+				assert.deepEqual({'password': "SomePW", "username": "account_name/application_name"}, stubGet.args[0][1]);
+		});
+		it('sends many aos request has application authentication', function () {
+				api.sendAO([{"body": "hello1"}, {"body": "hello2"}], callback);
+				assert.deepEqual({'password': "SomePW", "username": "account_name/application_name"}, stubPost.args[0][2]);
+		});
 });

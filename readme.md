@@ -19,7 +19,7 @@ Nuntium uses for tracking that message to the console.
 ```javascript
 var nuntium = require('nuntium')
 
-var client = new nuntium('your_account', 'your_application', 'your_password');
+var client = new nuntium('https://nuntium.instedd.org','your_account', 'your_application', 'your_password');
 client.sendAO({'body':'Hello World','to':'sms://1234'}, function(data) {
     console.log(data.guid);
 });

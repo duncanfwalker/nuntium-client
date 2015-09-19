@@ -4,17 +4,21 @@
   "description": "Client library for the Nuntium API. Direct port of the nuntium_api Gem",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "lib": "lib",
+    "doc":"docs"
   },
   "dependencies": {
     "restler": "^3.3.0"
   },
   "devDependencies": {
+    "jsdoc-to-markdown": "^1.1.1",
     "mocha": "0.3.x",
     "sinon": "1.16.1"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "docs": "jsdoc2md lib/*.js > docs/api-generated.md"
   },
   "author": "Duncan Walker",
   "license": "MIT"

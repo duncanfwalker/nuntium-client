@@ -2,7 +2,7 @@ var assert = require('assert');
 var sinon = require("sinon");
 var rest = require('restler');
 var Request = require('restler').Request;
-var Nuntium = require('../index').Nuntium;
+var Nuntium = require('../index').Client;
 var NuntiumError = require('../lib/nuntiumerror');
 
 describe('API', function () {

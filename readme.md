@@ -46,7 +46,9 @@ TODO
 ----
 * Get someone else to try the client out
 * Publish to NPM
+* Add Nuntium Application to handle the AT and AO-delivery HTTP callbacks -  separate module? Need to decide how this 
+relates to multiple applications feature.
+* Add support for multiple applications 
 * Add account authentication
 * Maybe make callback's optional
-* Add support for multiple applications 
-* Add Nuntium Application to handle the AT and AO-delivery HTTP callbacks -  separate module?
+* Support for connection pooling

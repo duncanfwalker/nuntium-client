@@ -1,32 +1,29 @@
-<a name="Nuntium"></a>
-## Nuntium
+<a name="Client"></a>
+## Client
 **Kind**: global class  
 
-* [Nuntium](#Nuntium)
-  * [new Nuntium(account, application, password)](#new_Nuntium_new)
-  * _instance_
-    * [.getCountries(callback)](#Nuntium+getCountries)
-    * [.getCountry(country_id, callback)](#Nuntium+getCountry)
-    * [.getCarriers([country_id], callback)](#Nuntium+getCarriers)
-    * [.getCarrier(carrier_id, callback)](#Nuntium+getCarrier)
-    * [.updateChannel(name, properties, callback)](#Nuntium+updateChannel)
-    * [.createChannel(properties, callback)](#Nuntium+createChannel)
-    * [.getChannels(callback)](#Nuntium+getChannels)
-    * [.getChannel(name, callback)](#Nuntium+getChannel)
-    * [.deleteChannel(name, callback)](#Nuntium+deleteChannel)
-    * [.getAO(token, callback)](#Nuntium+getAO)
-    * [.sendAO(message, callback)](#Nuntium+sendAO)
-    * [.getCandidateChannelsForAO(args, callback)](#Nuntium+getCandidateChannelsForAO)
-    * [.getCustomAttributes(address, callback)](#Nuntium+getCustomAttributes)
-    * [.setCustomAttributes(address, attributes, callback)](#Nuntium+setCustomAttributes)
-    * [.createTwitterFriendship(args)](#Nuntium+createTwitterFriendship)
-    * [.twitterAuthorize(args, callback)](#Nuntium+twitterAuthorize)
-    * [.xmppAddContact(args)](#Nuntium+xmppAddContact)
-  * _inner_
-    * [~requestCallback](#Nuntium..requestCallback) : <code>function</code>
+* [Client](#Client)
+  * [new Client(account, application, password)](#new_Client_new)
+  * [.getCountries(callback)](#Client+getCountries)
+  * [.getCountry(country_id, callback)](#Client+getCountry)
+  * [.getCarriers([country_id], callback)](#Client+getCarriers)
+  * [.getCarrier(carrier_id, callback)](#Client+getCarrier)
+  * [.updateChannel(name, properties, callback)](#Client+updateChannel)
+  * [.createChannel(properties, callback)](#Client+createChannel)
+  * [.getChannels(callback)](#Client+getChannels)
+  * [.getChannel(name, callback)](#Client+getChannel)
+  * [.deleteChannel(name, callback)](#Client+deleteChannel)
+  * [.getAO(token, callback)](#Client+getAO)
+  * [.sendAO(message, callback)](#Client+sendAO)
+  * [.getCandidateChannelsForAO(args, callback)](#Client+getCandidateChannelsForAO)
+  * [.getCustomAttributes(address, callback)](#Client+getCustomAttributes)
+  * [.setCustomAttributes(address, attributes, callback)](#Client+setCustomAttributes)
+  * [.createTwitterFriendship(args)](#Client+createTwitterFriendship)
+  * [.twitterAuthorize(args, callback)](#Client+twitterAuthorize)
+  * [.xmppAddContact(args)](#Client+xmppAddContact)
 
-<a name="new_Nuntium_new"></a>
-### new Nuntium(account, application, password)
+<a name="new_Client_new"></a>
+### new Client(account, application, password)
 Represents the Nuntium API.
 
 
@@ -36,44 +33,56 @@ Represents the Nuntium API.
 | application | <code>string</code> | Name of your Nuntium application |
 | password | <code>string</code> | Password for the application. |
 
-<a name="Nuntium+getCountries"></a>
-### nuntium.getCountries(callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCountries"></a>
+### client.getCountries(callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getCountry"></a>
-### nuntium.getCountry(country_id, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCountry"></a>
+### client.getCountry(country_id, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
+**Throws**:
+
+- <code>NuntiumError</code> On bad arguments
+
 
 | Param | Type |
 | --- | --- |
 | country_id | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getCarriers"></a>
-### nuntium.getCarriers([country_id], callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCarriers"></a>
+### client.getCarriers([country_id], callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | [country_id] | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getCarrier"></a>
-### nuntium.getCarrier(carrier_id, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCarrier"></a>
+### client.getCarrier(carrier_id, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
+**Throws**:
+
+- <code>NuntiumError</code> On bad arguments
+
 
 | Param | Type |
 | --- | --- |
 | carrier_id | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+updateChannel"></a>
-### nuntium.updateChannel(name, properties, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+updateChannel"></a>
+### client.updateChannel(name, properties, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
+**Throws**:
+
+- <code>NuntiumError</code> On bad arguments
+
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -81,53 +90,61 @@ Represents the Nuntium API.
 | properties | <code>Object</code> | to update |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> |  |
 
-<a name="Nuntium+createChannel"></a>
-### nuntium.createChannel(properties, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+createChannel"></a>
+### client.createChannel(properties, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | properties | <code>Object</code> | of the new channel |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> |  |
 
-<a name="Nuntium+getChannels"></a>
-### nuntium.getChannels(callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getChannels"></a>
+### client.getChannels(callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getChannel"></a>
-### nuntium.getChannel(name, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getChannel"></a>
+### client.getChannel(name, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
+**Throws**:
+
+- <code>NuntiumError</code> On bad arguments
+
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | of the channel to get |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> |  |
 
-<a name="Nuntium+deleteChannel"></a>
-### nuntium.deleteChannel(name, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+deleteChannel"></a>
+### client.deleteChannel(name, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
+**Throws**:
+
+- <code>NuntiumError</code> On bad arguments
+
 
 | Param | Type |
 | --- | --- |
 | name |  | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getAO"></a>
-### nuntium.getAO(token, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getAO"></a>
+### client.getAO(token, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | token | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+sendAO"></a>
-### nuntium.sendAO(message, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+sendAO"></a>
+### client.sendAO(message, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
@@ -136,9 +153,9 @@ Represents the Nuntium API.
 | message.body | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+getCandidateChannelsForAO"></a>
-### nuntium.getCandidateChannelsForAO(args, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCandidateChannelsForAO"></a>
+### client.getCandidateChannelsForAO(args, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -147,18 +164,18 @@ Represents the Nuntium API.
 | args.body | <code>string</code> |  |
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> |  |
 
-<a name="Nuntium+getCustomAttributes"></a>
-### nuntium.getCustomAttributes(address, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+getCustomAttributes"></a>
+### client.getCustomAttributes(address, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | address | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+setCustomAttributes"></a>
-### nuntium.setCustomAttributes(address, attributes, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+setCustomAttributes"></a>
+### client.setCustomAttributes(address, attributes, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
@@ -166,9 +183,9 @@ Represents the Nuntium API.
 | attributes | <code>Object</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+createTwitterFriendship"></a>
-### nuntium.createTwitterFriendship(args)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+createTwitterFriendship"></a>
+### client.createTwitterFriendship(args)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
@@ -177,9 +194,9 @@ Represents the Nuntium API.
 | args.user | <code>string</code> | 
 | args.follow | <code>bool</code> | 
 
-<a name="Nuntium+twitterAuthorize"></a>
-### nuntium.twitterAuthorize(args, callback)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+twitterAuthorize"></a>
+### client.twitterAuthorize(args, callback)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
@@ -187,24 +204,12 @@ Represents the Nuntium API.
 | args.channel | <code>string</code> | 
 | callback | <code>[requestCallback](#Nuntium..requestCallback)</code> | 
 
-<a name="Nuntium+xmppAddContact"></a>
-### nuntium.xmppAddContact(args)
-**Kind**: instance method of <code>[Nuntium](#Nuntium)</code>  
+<a name="Client+xmppAddContact"></a>
+### client.xmppAddContact(args)
+**Kind**: instance method of <code>[Client](#Client)</code>  
 
 | Param | Type |
 | --- | --- |
 | args | <code>Object</code> | 
 | args.channel | <code>string</code> | 
-
-<a name="Nuntium..requestCallback"></a>
-### Nuntium~requestCallback : <code>function</code>
-This callback is displayed as part of the Requester class.
-If the response was an error
-
-**Kind**: inner typedef of <code>[Nuntium](#Nuntium)</code>  
-
-| Param | Type |
-| --- | --- |
-| result | <code>Object</code> &#124; <code>Error</code> | 
-| response | <code>Object</code> | 
 

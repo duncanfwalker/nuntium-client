@@ -3,7 +3,7 @@ var sinon = require("sinon");
 var rest = require('restler');
 var Request = require('restler').Request;
 var Nuntium = require('../index').Client;
-var NuntiumError = require('../lib/nuntiumerror');
+var NuntiumError = require('../lib/nuntium-error');
 
 describe('API', function () {
 		var callback, api, server;

@@ -151,7 +151,7 @@ describe('API', function () {
 						expectGet(
 								'host/account_name/application_name/send_ao?from=sms%3A%2F%2F1234&body=Hello',
 								[{"name": "Argentina", "configuration": [{"value": "bar", "name": "foo"}]}],
-								{'x_nuntium_id': '1', 'x_nuntium_guid': '2', 'x_nuntium_token': '3'}
+								{'x-nuntium-id': '1', 'x-nuntium-guid': '2', 'x-nuntium-token': '3'}
 						);
 						api.sendAO({'from': 'sms://1234', 'body': 'Hello'}, callback);
 						sinon.assert.calledWith(callback, {'id': '1', 'guid': '2', 'token': '3'});

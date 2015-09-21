@@ -4,10 +4,15 @@ Nuntium NodeJS Client
 
 Client library for using the Nuntium API from NodeJS. Direct port of the [nuntium_api Ruby gem](https://bitbucket.org/instedd/nuntium-api-ruby/)
 
+[Nuntium](http://instedd.org/technologies/nuntium/) is an application for integrating with message platforms like SMS.
+
+To use this client you will need to set up an account at <http://nuntium.instedd.org> or host the Nuntium Ruby 
+application <https://github.com/instedd/nuntium> on your own server.
+
 Installing
 ----------
 ```
-npm install nuntium
+npm install nuntium-client
 ```
 
 Getting Started
@@ -45,7 +50,6 @@ npm test
 TODO
 ----
 * Get someone else to try the client out
-* Publish to NPM
 * Add Nuntium Application to handle the AT and AO-delivery HTTP callbacks -  separate module? Need to decide how this 
 relates to multiple applications feature.
 * Add support for multiple applications 
